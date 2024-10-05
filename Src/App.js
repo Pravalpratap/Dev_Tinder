@@ -1,26 +1,28 @@
 const express = require("express");
 
 const app = express();
+const { adminauth,userauth } = require("../Middlewares/Auth.js");
 
-// app.use("/user",rH,[rH2,rH3,rH4],rH5)
+// Applying adminauth middleware to /admin route
+app.use("/admin", adminauth);
 
-app.use(
-  "/user",
-  (req, res, next) => {
-    console.log("Handling the route user!!");
-    // res.send("Response");
-    next();
-  },
-  (req, res, next) => {
-    console.log("Handling the route user 2");
-    next();
-  },
-  (req, res, next) => {
-    console.log("Handling the route user 3");
-    res.send("Response 3");
-  }
-);
+// Define a GET route for /user
+app.get("/user",userauth, (req, res) => {
+  res.send("User Data Sent");
+});
+
+app.get("/user/login",(req,res)=>{
+  res.send("User logged in Succesfully")
+})
+// Define a GET route for /admin
+app.get("/admin/getAllData",(req,res)=>{
+  res.send("All data Sent")
+})
+app.get("/admin/deleteUser",(req,res)=>{
+  res.send("Deleted a user")
+})
+
 
 app.listen(4000, () => {
-  console.log("Server is Successfully listening on port 4000");
+  console.log("Server is successfully listening on port 4000");
 });
